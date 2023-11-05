@@ -28,9 +28,10 @@ class RandomizedShellSort:
     def compare_regions(self, a, s, t, offset):
         for count in range(4):
             mate = list(range(offset))
-            # self.permute_random(mate)
+            self.permute_random(mate)
             for i in range(offset):
                 self.compare_exchange(a, s + i, t + mate[i])
+
     def randomized_shell_sort(self):
         a = self._dataset
         n = len(self._dataset)
@@ -63,15 +64,14 @@ if __name__ == "__main__":
     for filepath in filepaths:
         tracemalloc.start()
         start_time = time.time()
-        max_heap_sort = RandomizedShellSort(filepath)
-        max_heap_sort.randomized_shell_sort()
+        sort = RandomizedShellSort(filepath)
+        sort.randomized_shell_sort()
         end_time = time.time()
         snapshot = tracemalloc.take_snapshot()
         tracemalloc.stop()
         runtime = (end_time - start_time) * 1000
         print('------' * 20)
         print(f'Runtime of {filepath.split("/")[-1]}: '.ljust(45), str(round(runtime)).ljust(5), " ms")
-
         top_stats = snapshot.statistics('lineno')
         total = sum(stat.size for stat in top_stats)
         print(f"Total allocated size: {total / 1024} KiB")
